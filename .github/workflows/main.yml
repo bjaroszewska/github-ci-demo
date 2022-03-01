@@ -7,7 +7,10 @@ on:
         description: 'Message. What changes were made?'
         required: false
         default: 'Updated Figma'
-
+      version:
+        description: 'Which version of the Figma document to use?'
+        required: false
+        default: '' # Will use latest if not set
 jobs:
   generate-icons:
     runs-on: ubuntu-latest
