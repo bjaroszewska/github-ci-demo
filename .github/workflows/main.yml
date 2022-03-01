@@ -1,4 +1,4 @@
-name: figma
+name: main
 
 on:
   workflow_dispatch:
@@ -7,9 +7,29 @@ on:
         description: 'Message. What changes were made?'
         required: false
         default: 'Updated Figma'
+      version:
+        description: 'Which version of the Figma document to use?'
+        required: false
+        default: '' # Will use latest if not set
+  push:
+    branches:
+      - "main"
 
 jobs:
-  generate-icons:
-    runs-on: ubuntu-latest
+  build-unix:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: ["ubuntu-latest"]
+        node-version: [14.x]
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - name: Inputs
+        id: input-messages
+        run: |
+          echo "MESSAGE ---> '${{ github.event.inputs.message }}'"
+          echo "VERSION ---> '${{ github.event.inputs.version }}'"
+
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@v2
